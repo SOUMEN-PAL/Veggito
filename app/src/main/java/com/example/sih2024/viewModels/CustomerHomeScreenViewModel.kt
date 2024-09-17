@@ -26,6 +26,9 @@ class CustomerHomeScreenViewModel(
     var firestoreReference = authViewModel.firestoreReference
     var selectedGroupIndex = mutableIntStateOf(0)
 
+    var partialexclusiveOfferProducts = mutableStateListOf<ProductDataItems?>()
+    var partialbestSellingProducts = mutableStateListOf<ProductDataItems?>()
+
     val products = mutableStateListOf<ProductDataItems?>()
 
     var CategoryImageMap = mapOf(
@@ -79,8 +82,26 @@ class CustomerHomeScreenViewModel(
     }
 
 
+    fun fetchPartialProducts(category: String, products: MutableList<ProductDataItems?>) {
+        viewModelScope.launch {
+            try {
+                val collectionRef = firestoreReference.collection("Offers").document("connecter").collection(category)
+                val totalCount = collectionRef.get().await().size()
+                var limit = totalCount / 2
+                if(limit == 0){
+                    limit = 1
+                }
+                val fetchedProducts= collectionRef.limit(limit.toLong()).get().await()
+                    .documents.mapNotNull { it.toObject(ProductDataItems::class.java) }
 
+                products.clear()
+                products.addAll(fetchedProducts)
+            } catch (e: FirebaseFirestoreException) {
+                // Handle exception
 
+            }
+        }
+    }
 
 
 

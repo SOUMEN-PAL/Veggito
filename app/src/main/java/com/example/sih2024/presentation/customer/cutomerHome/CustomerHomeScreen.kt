@@ -17,6 +17,7 @@ import com.example.sih2024.presentation.customerHome.Banner.HomeBanner
 import com.example.sih2024.presentation.customerHome.Banner.banners
 import com.example.sih2024.presentation.customerHome.BottomBar.BottomBar
 import com.example.sih2024.presentation.customerHome.Collections.HomeCollections
+import com.example.sih2024.presentation.customerHome.Product.ProductDataItems
 import com.example.sih2024.viewModels.AuthViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 
@@ -25,10 +26,15 @@ fun CustomerHomeScreen(authViewModel: AuthViewModel , customerHomeScreenViewMode
 
     val exclusiveOfferProducts = customerHomeScreenViewModel.exclusiveOfferProducts
     val bestSellingProducts = customerHomeScreenViewModel.bestSellingProducts
+    val partialexclusiveOfferProducts = customerHomeScreenViewModel.partialexclusiveOfferProducts
+    val partialbestSellingProducts = customerHomeScreenViewModel.partialbestSellingProducts
+
 
     LaunchedEffect(Unit) {
         customerHomeScreenViewModel.fetchProducts("Exclusive Offers", customerHomeScreenViewModel._exclusiveOfferProducts)
         customerHomeScreenViewModel.fetchProducts("Best Selling", customerHomeScreenViewModel._bestSellingProducts)
+        customerHomeScreenViewModel.fetchPartialProducts("Exclusive Offers", customerHomeScreenViewModel.partialexclusiveOfferProducts)
+        customerHomeScreenViewModel.fetchPartialProducts("Best Selling", customerHomeScreenViewModel.partialbestSellingProducts)
     }
 
 
@@ -53,8 +59,8 @@ fun CustomerHomeScreen(authViewModel: AuthViewModel , customerHomeScreenViewMode
                     .padding(horizontal = 16.dp)
             ){
                 item{ HomeBanner(banners = banners) }
-                item { HomeCollections(exclusiveOfferProducts, customerHomeScreenViewModel, "Exclusive Offers") }
-                item { HomeCollections(bestSellingProducts, customerHomeScreenViewModel, "Best Selling") }
+                item { HomeCollections(partialexclusiveOfferProducts, customerHomeScreenViewModel, "Exclusive Offers") }
+                item { HomeCollections(partialbestSellingProducts, customerHomeScreenViewModel, "Best Selling") }
             }
 
         }

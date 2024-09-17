@@ -37,7 +37,7 @@ fun HomeCollections(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = category, fontSize = 24.sp)
-                TextButton(onClick = { /*TODO*/ }) {
+                TextButton(onClick = {  }) {
                     Text(text = "See all", color = colorResource(id = R.color.maingreen))
                 }
             }
