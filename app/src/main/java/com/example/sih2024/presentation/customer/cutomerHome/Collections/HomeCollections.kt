@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sih2024.presentation.customerHome.Product.Product
@@ -24,8 +23,9 @@ import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 
 @Composable
 fun HomeCollections(
-    productDataItems : MutableList<ProductDataItems?>,
-    customerHomeScreenViewModel: CustomerHomeScreenViewModel
+    productDataItems: List<ProductDataItems?>,
+    customerHomeScreenViewModel: CustomerHomeScreenViewModel,
+    category: String
 ){
         Column(
             modifier = Modifier
@@ -36,7 +36,7 @@ fun HomeCollections(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = customerHomeScreenViewModel.offerCategory.value, fontSize = 24.sp)
+                Text(text = category, fontSize = 24.sp)
                 TextButton(onClick = { /*TODO*/ }) {
                     Text(text = "See all", color = colorResource(id = R.color.maingreen))
                 }

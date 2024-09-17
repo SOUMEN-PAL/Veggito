@@ -8,11 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.sih2024.presentation.customerHome.Banner.HomeBanner
 import com.example.sih2024.presentation.customerHome.Banner.banners
@@ -24,17 +23,18 @@ import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 @Composable
 fun CustomerHomeScreen(authViewModel: AuthViewModel , customerHomeScreenViewModel: CustomerHomeScreenViewModel , navController: NavController){
 
-    val ExclusiveOfferProducts = customerHomeScreenViewModel.FetchAllItemsInCategory(category = "Exclusive Offers" , onSuccess = {success->
+    val exclusiveOfferProducts = customerHomeScreenViewModel.exclusiveOfferProducts
+    val bestSellingProducts = customerHomeScreenViewModel.bestSellingProducts
 
-    })
+    LaunchedEffect(Unit) {
+        customerHomeScreenViewModel.fetchProducts("Exclusive Offers", customerHomeScreenViewModel._exclusiveOfferProducts)
+        customerHomeScreenViewModel.fetchProducts("Best Selling", customerHomeScreenViewModel._bestSellingProducts)
+    }
 
-    val BestSellingProducts = customerHomeScreenViewModel.FetchAllItemsInCategory(category = "Best Selling" , onSuccess = {success->
-
-    })
 
     Scaffold(
         modifier = Modifier.imePadding(),
-        bottomBar = { BottomBar(customerHomeScreenViewModel , navController)}
+        bottomBar = { BottomBar(customerHomeScreenViewModel , navController)},
     ) {pv->
         Column(
             Modifier
@@ -53,8 +53,8 @@ fun CustomerHomeScreen(authViewModel: AuthViewModel , customerHomeScreenViewMode
                     .padding(horizontal = 16.dp)
             ){
                 item{ HomeBanner(banners = banners) }
-                item{ HomeCollections(ExclusiveOfferProducts , customerHomeScreenViewModel) }
-                item{ HomeCollections(BestSellingProducts , customerHomeScreenViewModel) }
+                item { HomeCollections(exclusiveOfferProducts, customerHomeScreenViewModel, "Exclusive Offers") }
+                item { HomeCollections(bestSellingProducts, customerHomeScreenViewModel, "Best Selling") }
             }
 
         }
