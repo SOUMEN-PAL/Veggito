@@ -51,7 +51,6 @@ fun Product(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-
                     .padding(16.dp),
             ) {
                 Image(painter = painterResource(id = customerHomeScreenViewModel.getDrawableResourceId(itemName = productData.imageName , context = customerHomeScreenViewModel.context)),

@@ -1,13 +1,8 @@
 package com.example.sih2024.viewModels
 
 import android.content.Context
-import androidx.annotation.DrawableRes
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -99,6 +94,20 @@ class CustomerHomeScreenViewModel(
             }
             products.clear()
             products.addAll(fetchedProducts)
+        }
+    }
+
+    fun fetchCategoryProducts(category: String, categoryproducts: MutableList<ProductDataItems?>){
+        viewModelScope.launch {
+            val fetchedProducts = try {
+                firestoreReference.collection("Items").document("Connecter").collection(category).get().await()
+                    .documents.mapNotNull { it.toObject(ProductDataItems::class.java) }
+            } catch (e: FirebaseFirestoreException) {
+                // Handleexception
+                emptyList()
+            }
+            categoryproducts.clear()
+            categoryproducts.addAll(fetchedProducts)
         }
     }
 
