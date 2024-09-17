@@ -50,6 +50,9 @@ fun BottomBar(customerHomeScreenViewModel: CustomerHomeScreenViewModel , navCont
                         if(selectedGroupIndex == 2){
                             navController.navigate(Pages.CartScreen.route)
                         }
+                        if(selectedGroupIndex == 3){
+                            navController.navigate(Pages.FavouriteScreen.route)
+                        }
                         if(selectedGroupIndex == 4){
                             navController.navigate(Pages.SignOut.route)
                         }

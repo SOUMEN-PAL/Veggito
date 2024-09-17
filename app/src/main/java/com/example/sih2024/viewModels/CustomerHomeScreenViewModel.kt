@@ -205,6 +205,21 @@ class CustomerHomeScreenViewModel(
         }
     }
 
+    var favouriteItems = mutableStateListOf<ProductDataItems?>()
+    fun fetchFavouritesDetails(favouriteItemList:MutableList<ProductDataItems?>){
+        viewModelScope.launch {
+            val fetchedProducts = try{
+                firestoreReference.collection("Customers").document(authViewModel.email.value)
+                    .collection("Favourites")
+                    .get().await()
+                    .documents.mapNotNull { it.toObject(ProductDataItems::class.java) }
+            }catch (e : FirebaseFirestoreException){
+                emptyList()
+            }
+            favouriteItemList.clear()
+            favouriteItemList.addAll(fetchedProducts)
+        }
+    }
 
     fun removeFromCart(itemName : String , onSuccess : (Boolean) -> Unit){
         viewModelScope.launch {
@@ -235,5 +250,32 @@ class CustomerHomeScreenViewModel(
         }
     }
 
+    //Favourites feild
+    fun addToFavourites(Product: ProductDataItems , onSuccess : (Boolean) -> Unit){
+        firestoreReference.collection("Customers").document(authViewModel.email.value)
+            .collection("Favourites").document(Product.name).set(Product).addOnCompleteListener{task->
+                if(task.isSuccessful){
+                    onSuccess(true)
+                }
+                else{
+                    onSuccess(false)
+                }
+
+            }
+    }
+
+    fun removeFromFavourites(itemName : String , onSuccess : (Boolean) -> Unit){
+        viewModelScope.launch {
+            try{
+                firestoreReference.collection("Customers").document(authViewModel.email.value).collection("Favourites").document(itemName).delete().await()
+
+                onSuccess(true)
+                fetchFavouritesDetails(favouriteItems)
+            }catch (e : FirebaseFirestoreException){
+                onSuccess(false)
+            }
+
+        }
+    }
 
 }

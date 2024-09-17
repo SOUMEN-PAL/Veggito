@@ -17,6 +17,7 @@ sealed class Pages(val route : String) {
     data object CategoryItemsScreen : Pages("categoryItemsScreen")
     data object SeeAllScreen : Pages("seeAllScreen")
     data object CartScreen : Pages("cartScreen")
+    data object FavouriteScreen : Pages("favouriteScreen")
 
     //farmer Screens
     data object FarmerHomeScreen : Pages("farmerHomeScreen")
