@@ -20,9 +20,9 @@ data class ProductDataItems(
 ) : Product
 
 data class ProductDataUser(
-    override val name: String,
-    override val price: String,
-    override val description: String,
+    override val name: String = "",
+    override val price: String = "",
+    override val description: String = "",
     override val details : String = "",
     override val imageName: String = "",
     val userQuantity : Int = 1

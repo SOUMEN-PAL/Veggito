@@ -226,10 +226,13 @@ fun LoginScreen(
 
                                             if (authViewModel.userType.value == "Farmer") {
                                                 navController.navigate(Pages.FarmerHomeScreen.route)
+                                                navController.popBackStack()
                                             } else if (authViewModel.userType.value == "Customer") {
                                                 navController.navigate(Pages.CustomerHomeScreen.route)
+                                                navController.popBackStack()
                                             } else if (authViewModel.userType.value == "Agent") {
                                                 navController.navigate(Pages.AgentHomeScreen.route)
+                                                navController.popBackStack()
                                             }
                                         } else {
                                             Toast.makeText(

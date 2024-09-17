@@ -3,9 +3,11 @@ package com.example.sih2024.viewModels
 import android.content.Context
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.sih2024.R
 import com.example.sih2024.presentation.customer.customerExplore.CategoryData
 import com.example.sih2024.presentation.customerHome.Product.ProductDataItems
@@ -33,6 +35,8 @@ class CustomerHomeScreenViewModel(
     var OfferProducts = mutableStateListOf<ProductDataItems?>()
 
     val products = mutableStateListOf<ProductDataItems?>()
+
+
 
     var CategoryImageMap = mapOf(
         "Dairy" to R.drawable.dairy,
@@ -167,6 +171,68 @@ class CustomerHomeScreenViewModel(
 
             }
 
+    }
+    var totalPrice = mutableIntStateOf(0)
+
+    fun calculateTotalPrice() {
+        totalPrice.intValue = 0
+        if (cartItems.isNotEmpty()) {
+            for (item in cartItems) {
+                val itemQuantity = item?.userQuantity ?: 0
+                val itemPrice = item?.price?.toDouble() ?: 0.0
+                totalPrice.value += (itemPrice * itemQuantity).toInt()
+            }
+        }
+    }
+
+    var cartItems = mutableStateListOf<ProductDataUser?>()
+
+
+    fun fetchCartDetails(cartItemsList:MutableList<ProductDataUser?>){
+        viewModelScope.launch {
+            val fetchedProducts = try {
+                firestoreReference.collection("Customers").document(authViewModel.email.value)
+                    .collection("Cart")
+                    .get().await()
+                    .documents.mapNotNull { it.toObject(ProductDataUser::class.java) }
+
+            }catch (e : FirebaseFirestoreException){
+                emptyList()
+            }
+            cartItems.clear()
+            cartItems.addAll(fetchedProducts)
+            calculateTotalPrice()
+        }
+    }
+
+
+    fun removeFromCart(itemName : String , onSuccess : (Boolean) -> Unit){
+        viewModelScope.launch {
+            try{
+                firestoreReference.collection("Customers").document(authViewModel.email.value).collection("Cart").document(itemName).delete().await()
+
+                onSuccess(true)
+                fetchCartDetails(cartItems)
+            }catch (e : FirebaseFirestoreException){
+                onSuccess(false)
+            }
+            calculateTotalPrice()
+        }
+    }
+
+    fun updateItemQuantity(itemName: String, newQuantity: Int, onSuccess: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                firestoreReference.collection("Customers").document(authViewModel.email.value)
+                    .collection("Cart").document(itemName)
+                    .update("userQuantity", newQuantity).await()
+                onSuccess(true)
+                fetchCartDetails(cartItems) // Refresh cart items after successful update
+            } catch (e: FirebaseFirestoreException) {
+                onSuccess(false)
+                // Handle failure: You might want to show a Snackbar or Toast message here
+            }
+        }
     }
 
 

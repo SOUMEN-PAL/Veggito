@@ -26,6 +26,7 @@ import com.example.sih2024.presentation.SignUpMethodsScreen
 import com.example.sih2024.presentation.SignUpScreen
 import com.example.sih2024.presentation.customer.customerExplore.CategoryItemsScreen
 import com.example.sih2024.presentation.customer.customerExplore.ExploreScreen
+import com.example.sih2024.presentation.customer.customercart.MyCartScreen
 import com.example.sih2024.presentation.customer.cutomerHome.Collections.SeeAllScreen
 import com.example.sih2024.presentation.onBordingScreen
 import com.example.sih2024.screens.pages.Pages
@@ -238,6 +239,15 @@ fun Navigation(
         }
 
 
+        composable(route = Pages.CartScreen.route){
+            MyCartScreen(
+                modifier = Modifier,
+                authViewModel = viewModel,
+                customerHomeScreenViewModel = customerHomeScreenViewModel,
+                navController = navController,
+                context = activity
+            )
+        }
     }
 
 

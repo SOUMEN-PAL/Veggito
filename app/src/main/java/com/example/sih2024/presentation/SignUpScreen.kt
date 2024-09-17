@@ -389,12 +389,15 @@ fun SignUpScreen(modifier: Modifier = Modifier , authViewModel: AuthViewModel , 
                                 Toast.makeText(context , "Successfully Signed UP" , Toast.LENGTH_LONG).show()
                                 if(userType == "Farmer"){
                                     navController.navigate(Pages.FarmerHomeScreen.route)
+
                                 }
                                 else if(userType == "Agent"){
                                     navController.navigate(Pages.AgentHomeScreen.route)
+
                                 }
                                 else if(userType == "Customer"){
                                     navController.navigate(Pages.CustomerHomeScreen.route)
+
                                 }
 
                             }else{
@@ -420,43 +423,7 @@ fun SignUpScreen(modifier: Modifier = Modifier , authViewModel: AuthViewModel , 
                 Text(text = "Sign Up", fontStyle = FontStyle.Italic)
             }
 
-            var signupOffset by remember { mutableStateOf<Int?>(null) }
-            val annotatedText2 = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        color = Color.Gray,
-                        fontWeight = FontWeight.SemiBold,
-                        fontStyle = FontStyle.Italic
-                    )
-                ) {
-                    append("Already have an account? ")
-                }
-                val startIndex = length
-                pushStringAnnotation(tag = "login", annotation = "login")
-                withStyle(
-                    style = SpanStyle(
-                        color = colorResource(id = R.color.maingreen),
-                        fontWeight = FontWeight.Bold,
-                        fontStyle = FontStyle.Italic
-                    )
-                ) {
-                    append("login")
-                }
-                signupOffset = startIndex
-                pop()
-            }
 
-            Text(
-                text = annotatedText2,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clickable {
-                        if (signupOffset != null) {
-                            navController.navigate(Pages.LoginScreen.route)
-
-                        }
-                    }
-            )
 
             Spacer(modifier = Modifier.weight(2f))
 
