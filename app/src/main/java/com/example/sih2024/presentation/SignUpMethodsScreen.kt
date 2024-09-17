@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -46,8 +47,7 @@ import com.example.sih2024.screens.pages.Pages
 
 
 @Composable
-fun SignUpMethodsScreen(navController: NavController){
-
+fun SignUpMethodsScreen(navController: NavController) {
 
 
     Column(
@@ -58,8 +58,9 @@ fun SignUpMethodsScreen(navController: NavController){
                 .fillMaxWidth()
                 .fillMaxHeight(.4f),
             contentAlignment = Alignment.Center
-        ){
-            Image(painter = painterResource(id = R.drawable.signin),
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.signin),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
@@ -72,7 +73,8 @@ fun SignUpMethodsScreen(navController: NavController){
                 .padding(top = 50.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(text = "Get your groceries\n" + "with nectar",
+            Text(
+                text = "Get your groceries\n" + "with nectar",
                 fontSize = 26.sp,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
@@ -88,7 +90,7 @@ fun SignUpMethodsScreen(navController: NavController){
             ) {
 
                 Text(text = "Select your SignUp Method")
-
+                Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = {
                         navController.navigate(Pages.PhoneNumberScreen.route)
@@ -114,21 +116,24 @@ fun SignUpMethodsScreen(navController: NavController){
 //                                .weight(1f))
                         Icon(
                             imageVector = Icons.Filled.Phone,
-                            contentDescription = null ,
+                            contentDescription = null,
                             modifier = Modifier.weight(1f)
                         )
 
 
 
                         Spacer(modifier = Modifier.width(20.dp))
-                        Text(text = "Continue with Email and Phone" , Modifier.weight(2.5f))
+                        Text(text = "Continue with Email and Phone", Modifier.weight(2.5f))
                     }
                 }
 
 
 
-                Spacer(modifier = Modifier.width(32.dp))
-                Button(onClick = { /*TODO*/ },
+
+
+
+                Button(
+                    onClick = { /*TODO*/ },
                     modifier = Modifier.size(width = 353.dp, height = 60.dp),
                     shape = RoundedCornerShape(19.dp),
                     colors = ButtonColors(
@@ -143,16 +148,19 @@ fun SignUpMethodsScreen(navController: NavController){
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Start
                     ) {
-                        Image(painter = painterResource(id = R.drawable.google), contentDescription = null,
+                        Image(
+                            painter = painterResource(id = R.drawable.google),
+                            contentDescription = null,
                             Modifier
                                 .size(20.dp)
-                                .weight(1f))
+                                .weight(1f)
+                        )
 //                        Spacer(modifier = Modifier.width(40.dp))
                         Text(text = "Continue with Google", Modifier.weight(2.5f))
                     }
 
                 }
-
+                Spacer(modifier = Modifier.weight(1f))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -174,7 +182,7 @@ fun SignUpMethodsScreen(navController: NavController){
                     )
                 }
 
-
+                Spacer(modifier = Modifier.weight(1f))
                 var signupOffset by remember { mutableStateOf<Int?>(null) }
                 val annotatedText2 = buildAnnotatedString {
                     withStyle(
@@ -184,7 +192,7 @@ fun SignUpMethodsScreen(navController: NavController){
                             fontStyle = FontStyle.Italic
                         )
                     ) {
-                        append("Alraedy have an account? ")
+                        append("Already have an account? ")
                     }
                     val startIndex = length
                     pushStringAnnotation(tag = "login", annotation = "login")
@@ -204,14 +212,16 @@ fun SignUpMethodsScreen(navController: NavController){
                 Text(
                     text = annotatedText2,
                     modifier = Modifier
-                        .padding(8.dp)
+
                         .clickable {
                             if (signupOffset != null) {
                                 navController.navigate(Pages.LoginScreen.route)
-
                             }
+
                         }
                 )
+                Spacer(modifier = Modifier.weight(1f))
+
 
 //                Button(onClick = { /*TODO*/ },
 //                    modifier = Modifier.size(width = 353.dp, height = 60.dp),
@@ -237,8 +247,6 @@ fun SignUpMethodsScreen(navController: NavController){
 //
 //                }
             }
-
-
 
 
         }

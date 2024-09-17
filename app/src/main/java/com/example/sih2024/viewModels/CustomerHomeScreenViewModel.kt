@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sih2024.R
 import com.example.sih2024.presentation.customer.customerExplore.CategoryData
 import com.example.sih2024.presentation.customerHome.Product.ProductDataItems
+import com.example.sih2024.presentation.customerHome.Product.ProductDataUser
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -142,5 +143,31 @@ class CustomerHomeScreenViewModel(
             itemName, "drawable", context.packageName
         )
     }
+
+
+    //Cart Logic
+    fun addData(Product: ProductDataItems , onSuccess : (Boolean) -> Unit) {
+        var userCartProduct = ProductDataUser(
+            name = Product.name,
+            price = Product.price,
+            description = Product.description,
+            details = Product.details,
+            imageName = Product.imageName,
+            userQuantity = 1
+        )
+
+        firestoreReference.collection("Customers").document(authViewModel.email.value)
+            .collection("Cart").document(Product.name).set(userCartProduct).addOnCompleteListener{task->
+                if(task.isSuccessful){
+                    onSuccess(true)
+                }
+                else{
+                    onSuccess(false)
+                }
+
+            }
+
+    }
+
 
 }

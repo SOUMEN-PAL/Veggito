@@ -25,8 +25,7 @@ data class ProductDataUser(
     override val description: String,
     override val details : String = "",
     override val imageName: String = "",
-    val isfavourite: Boolean = false,
-    val inCart: Boolean = false
+    val userQuantity : Int = 1
 ) : Product
 
 

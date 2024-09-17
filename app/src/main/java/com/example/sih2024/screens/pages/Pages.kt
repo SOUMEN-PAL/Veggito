@@ -8,6 +8,8 @@ sealed class Pages(val route : String) {
     data object LocationScreen: Pages("locationScreen")
     data object SignUpScreen : Pages("signUpScreen")
     data object LoginScreen : Pages("loginScreen")
+    data object SignOut : Pages("signoutScreen")
+
 
     //customer Screens
     data object CustomerHomeScreen : Pages("customerHomeScreen")

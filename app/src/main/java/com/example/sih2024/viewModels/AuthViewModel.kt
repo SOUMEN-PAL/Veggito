@@ -362,6 +362,7 @@ class AuthViewModel : ViewModel() {
                     getPhoneNumber(phoneNumber)
                     getName(name)
                     getEmail(email.value)
+                    setDistrictAndState(district , state)
                     Log.d("data", userData.userType + userData.address)
                     onSuccess(true)
                 } else {

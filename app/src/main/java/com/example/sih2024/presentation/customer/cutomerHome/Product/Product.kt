@@ -1,5 +1,6 @@
 package com.example.sih2024.presentation.customerHome.Product
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +39,11 @@ fun Product(
     modifier: Modifier = Modifier.padding(8.dp),
     customerHomeScreenViewModel: CustomerHomeScreenViewModel
 ){
-    Card(onClick = { /*TODO*/ },
+    Card(onClick = { /*TODO*/
+
+
+
+    },
         modifier = modifier
 //            .padding(8.dp)
             .size(width = 173.dp, height = 248.dp),
@@ -48,29 +53,51 @@ fun Product(
         border = BorderStroke(1.dp, Color.Gray),
         shape = RoundedCornerShape(16.dp)
         ) {
+
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
             ) {
+
                 Image(painter = painterResource(id = customerHomeScreenViewModel.getDrawableResourceId(itemName = productData.imageName , context = customerHomeScreenViewModel.context)),
                     contentDescription = null,
                     modifier = Modifier
                         .aspectRatio(16f / 9f)
                         .align(Alignment.CenterHorizontally)
                 )
+
                 Spacer(Modifier.height(20.dp))
                     Text(text = productData.name, fontSize = 16.sp)
                     Text(text = productData.description,fontSize = 14.sp, color = colorResource(id = R.color.grey))
 
+
+
                 Spacer(Modifier.weight(1f))
+
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
+
                     Text(text = productData.price,fontSize = 18.sp)
-                    Button(onClick = { /*TODO*/ },
+
+
+                    Button(onClick = {
+                        customerHomeScreenViewModel.addData(productData , onSuccess = {success->
+                            if(success){
+                                Toast.makeText(customerHomeScreenViewModel.context , "Added to Cart" , Toast.LENGTH_SHORT).show()
+                            }
+                            else{
+                                Toast.makeText(customerHomeScreenViewModel.context , "Unable to add Cart" , Toast.LENGTH_LONG).show()
+                            }
+                        })
+
+
+                    },
                         modifier = Modifier.size(45.dp),
                         shape = RoundedCornerShape(17.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -84,6 +111,8 @@ fun Product(
                             modifier = Modifier.size(20.dp)
                         )
                     }
+
+
                 }
 
 

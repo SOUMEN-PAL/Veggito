@@ -232,6 +232,10 @@ fun Navigation(
             }
 
         }
+        
+        composable(route = Pages.SignOut.route){
+            SignoutScreen(authViewModel = viewModel , navController = navController , customerHomeScreenViewModel = customerHomeScreenViewModel)
+        }
 
 
     }
