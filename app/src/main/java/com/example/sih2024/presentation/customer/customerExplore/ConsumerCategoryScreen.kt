@@ -20,12 +20,14 @@ import androidx.navigation.NavController
 import com.example.sih2024.presentation.customer.TextSection
 import com.example.sih2024.presentation.customerHome.BottomBar.BottomBar
 import com.example.sih2024.presentation.customerHome.SearchSection
+import com.example.sih2024.screens.pages.Pages
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExploreScreen(navController: NavController , customerHomeScreenViewModel: CustomerHomeScreenViewModel , context: Context){
+
 
     LaunchedEffect(Unit) {
         customerHomeScreenViewModel.fetchCategory()
@@ -64,7 +66,7 @@ fun ExploreScreen(navController: NavController , customerHomeScreenViewModel: Cu
                                 category = customerHomeScreenViewModel.categoryDataMap[categoryName],
                                 categoryName = categoryName
                             ) {
-
+                                navController.navigate(Pages.CategoryItemsScreen.withArgs(categoryName))
                             }
                         }
                     }

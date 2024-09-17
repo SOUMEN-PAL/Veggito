@@ -11,9 +11,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.sih2024.presentation.customerHome.CustomerHomeScreen
 import com.example.sih2024.models.User
 import com.example.sih2024.presentation.LocationScreen
@@ -22,6 +24,7 @@ import com.example.sih2024.presentation.OTPScreen
 import com.example.sih2024.presentation.PhoneNumberScreen
 import com.example.sih2024.presentation.SignUpMethodsScreen
 import com.example.sih2024.presentation.SignUpScreen
+import com.example.sih2024.presentation.customer.customerExplore.CategoryItemsScreen
 import com.example.sih2024.presentation.customer.customerExplore.ExploreScreen
 import com.example.sih2024.presentation.onBordingScreen
 import com.example.sih2024.screens.pages.Pages
@@ -181,6 +184,34 @@ fun Navigation(
             CustomerHomeScreen(viewModel , customerHomeScreenViewModel , navController)
             //TODO:Change
         }
+
+        composable(
+            route = Pages.CategoryItemsScreen.route + "/{category}",
+            arguments = listOf(
+                navArgument("category"){
+                    type = NavType.StringType
+                    nullable = false
+                }
+            )
+
+        ){
+            it.arguments?.getString("category")?.let { it1 ->
+                CategoryItemsScreen(
+                    navController = navController,
+                    customerHomeScreenViewModel = customerHomeScreenViewModel,
+                    category = it1,
+                    context = activity
+                )
+            }
+        }
+
+
+
+
+
+
+
+
 
     }
 

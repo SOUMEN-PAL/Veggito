@@ -27,7 +27,7 @@ import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 @Composable
 fun CategoryItemsScreen(navController: NavController, customerHomeScreenViewModel: CustomerHomeScreenViewModel, category: String, context: Context){
 
-    val products : MutableList<ProductDataItems?> = mutableListOf()
+    val products = customerHomeScreenViewModel.products
 
     LaunchedEffect(Unit) {
         customerHomeScreenViewModel.fetchCategoryProducts(category = category, categoryproducts = products)

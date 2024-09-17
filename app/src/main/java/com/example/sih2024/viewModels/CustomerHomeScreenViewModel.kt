@@ -26,6 +26,7 @@ class CustomerHomeScreenViewModel(
     var firestoreReference = authViewModel.firestoreReference
     var selectedGroupIndex = mutableIntStateOf(0)
 
+    val products = mutableStateListOf<ProductDataItems?>()
 
     var CategoryImageMap = mapOf(
         "Dairy" to R.drawable.dairy,

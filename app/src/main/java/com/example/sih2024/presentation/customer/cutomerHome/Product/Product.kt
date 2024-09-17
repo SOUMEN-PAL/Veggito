@@ -35,7 +35,7 @@ import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 @Composable
 fun Product(
     productData: ProductDataItems,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.padding(8.dp),
     customerHomeScreenViewModel: CustomerHomeScreenViewModel
 ){
     Card(onClick = { /*TODO*/ },

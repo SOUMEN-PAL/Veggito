@@ -12,6 +12,8 @@ sealed class Pages(val route : String) {
     //customer Screens
     data object CustomerHomeScreen : Pages("customerHomeScreen")
     data object CustomerCategoryScreen : Pages("customerCategoryScreen")
+    data object CategoryItemsScreen : Pages("categoryItemsScreen")
+
 
 
     //farmer Screens
@@ -21,4 +23,15 @@ sealed class Pages(val route : String) {
 
     //Agent Screens
     data object AgentHomeScreen : Pages("agentHomeScreen")
+
+
+    //WithArgs
+    fun withArgs(vararg args: String):String{
+        return buildString {
+            append(route)
+            args.forEach {arg->
+                append("/$arg")
+            }
+        }
+    }
 }
