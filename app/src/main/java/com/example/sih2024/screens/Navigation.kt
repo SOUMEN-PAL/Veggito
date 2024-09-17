@@ -26,6 +26,7 @@ import com.example.sih2024.presentation.SignUpMethodsScreen
 import com.example.sih2024.presentation.SignUpScreen
 import com.example.sih2024.presentation.customer.customerExplore.CategoryItemsScreen
 import com.example.sih2024.presentation.customer.customerExplore.ExploreScreen
+import com.example.sih2024.presentation.customer.cutomerHome.Collections.SeeAllScreen
 import com.example.sih2024.presentation.onBordingScreen
 import com.example.sih2024.screens.pages.Pages
 import com.example.sih2024.viewModels.AuthViewModel
@@ -56,14 +57,16 @@ fun Navigation(
             val currentUser = viewModel.myAuth.currentUser
             val firestoreReference = viewModel.firestoreReference
             val email = currentUser?.email
-            if (email!= null) {
+            if (email != null) {
                 try {
                     val collections = listOf("Customers", "Farmers", "Agents")
                     var userData: User? = null
                     var found = false
 
                     for (collectionName in collections) {
-                        val documentSnapshot = firestoreReference.collection(collectionName).document(email).get().await()
+                        val documentSnapshot =
+                            firestoreReference.collection(collectionName).document(email).get()
+                                .await()
                         if (documentSnapshot.exists()) {
                             userData = documentSnapshot.toObject<User>()
                             found = true
@@ -82,12 +85,12 @@ fun Navigation(
                         val state = userData.state
                         viewModel.setLocationDetails(latitude, longitude)
                         viewModel.setAddress(userAddress)
-                        viewModel.setDistrictAndState(district,state)
+                        viewModel.setDistrictAndState(district, state)
                         viewModel.setUserType(userType)
                         viewModel.getPhoneNumber(phoneNumber)
                         viewModel.getName(name)
                         viewModel.getEmail(email)
-                        Log.d("data" , userData.userType + userData.address)
+                        Log.d("data", userData.userType + userData.address)
                     } else {
                         Log.d("Navigation", "Data not found in any collection")
                     }
@@ -111,8 +114,6 @@ fun Navigation(
         } else {
             Pages.onBoardScreen.route
         }
-
-
 
 
     ) {
@@ -164,37 +165,41 @@ fun Navigation(
         }
 
         composable(route = Pages.AgentHomeScreen.route) {
-            CustomerHomeScreen(viewModel , customerHomeScreenViewModel , navController)
+            CustomerHomeScreen(viewModel, customerHomeScreenViewModel, navController)
             //TODO:Change
         }
 
 
 //Customer composables routes acess
         composable(route = Pages.CustomerHomeScreen.route) {
-            CustomerHomeScreen(viewModel , customerHomeScreenViewModel , navController)
+            CustomerHomeScreen(viewModel, customerHomeScreenViewModel, navController)
         }
-        composable(route = Pages.CustomerCategoryScreen.route){
-            ExploreScreen(navController = navController, customerHomeScreenViewModel = customerHomeScreenViewModel, context = activity)
+        composable(route = Pages.CustomerCategoryScreen.route) {
+            ExploreScreen(
+                navController = navController,
+                customerHomeScreenViewModel = customerHomeScreenViewModel,
+                context = activity
+            )
         }
 
 
 
 
         composable(route = Pages.FarmerHomeScreen.route) {
-            CustomerHomeScreen(viewModel , customerHomeScreenViewModel , navController)
+            CustomerHomeScreen(viewModel, customerHomeScreenViewModel, navController)
             //TODO:Change
         }
 
         composable(
             route = Pages.CategoryItemsScreen.route + "/{category}",
             arguments = listOf(
-                navArgument("category"){
+                navArgument("category") {
                     type = NavType.StringType
                     nullable = false
                 }
             )
 
-        ){
+        ) {
             it.arguments?.getString("category")?.let { it1 ->
                 CategoryItemsScreen(
                     navController = navController,
@@ -206,11 +211,27 @@ fun Navigation(
         }
 
 
+        composable(
+            route = Pages.SeeAllScreen.route + "/{offer}",
+            arguments = listOf(
+                navArgument("offer") {
+                    type = NavType.StringType
+                    nullable = false
+                }
+            )
+        ) {
 
+            it.arguments?.getString("offer")?.let { it1 ->
 
+                SeeAllScreen(
+                    offerType = it1,
+                    navController = navController,
+                    customerHomeScreenViewModel = customerHomeScreenViewModel
+                )
 
+            }
 
-
+        }
 
 
     }

@@ -25,7 +25,8 @@ import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 fun HomeCollections(
     productDataItems: List<ProductDataItems?>,
     customerHomeScreenViewModel: CustomerHomeScreenViewModel,
-    category: String
+    category: String,
+    onClick : () -> Unit
 ){
         Column(
             modifier = Modifier
@@ -37,7 +38,11 @@ fun HomeCollections(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = category, fontSize = 24.sp)
-                TextButton(onClick = {  }) {
+                TextButton(onClick = {
+
+                    onClick()
+
+                }) {
                     Text(text = "See all", color = colorResource(id = R.color.maingreen))
                 }
             }

@@ -29,6 +29,8 @@ class CustomerHomeScreenViewModel(
     var partialexclusiveOfferProducts = mutableStateListOf<ProductDataItems?>()
     var partialbestSellingProducts = mutableStateListOf<ProductDataItems?>()
 
+    var OfferProducts = mutableStateListOf<ProductDataItems?>()
+
     val products = mutableStateListOf<ProductDataItems?>()
 
     var CategoryImageMap = mapOf(
@@ -56,7 +58,7 @@ class CustomerHomeScreenViewModel(
 
     )
 
-    var categoryDataMap = CategoryImageMap.map {(category , image) ->
+    var categoryDataMap = CategoryImageMap.map { (category, image) ->
         category to CategoryData(
             image = image,
             color = CategoryColorMap[category] ?: Color.Transparent,
@@ -65,17 +67,16 @@ class CustomerHomeScreenViewModel(
     }.toMap()
 
 
-
     var categoryList = mutableStateListOf<String?>()
 
     fun fetchCategory() {
         viewModelScope.launch {
-            try{
+            try {
                 val querySnapshot = firestoreReference.collection("Category").get().await()
                 val categoryNames = querySnapshot.documents.mapNotNull { it.id }
                 categoryList.clear()
                 categoryList.addAll(categoryNames)
-            }catch (e : FirebaseFirestoreException){
+            } catch (e: FirebaseFirestoreException) {
 
             }
         }
@@ -85,13 +86,14 @@ class CustomerHomeScreenViewModel(
     fun fetchPartialProducts(category: String, products: MutableList<ProductDataItems?>) {
         viewModelScope.launch {
             try {
-                val collectionRef = firestoreReference.collection("Offers").document("connecter").collection(category)
+                val collectionRef = firestoreReference.collection("Offers").document("connecter")
+                    .collection(category)
                 val totalCount = collectionRef.get().await().size()
                 var limit = totalCount / 2
-                if(limit == 0){
+                if (limit == 0) {
                     limit = 1
                 }
-                val fetchedProducts= collectionRef.limit(limit.toLong()).get().await()
+                val fetchedProducts = collectionRef.limit(limit.toLong()).get().await()
                     .documents.mapNotNull { it.toObject(ProductDataItems::class.java) }
 
                 products.clear()
@@ -104,11 +106,11 @@ class CustomerHomeScreenViewModel(
     }
 
 
-
     fun fetchProducts(category: String, products: MutableList<ProductDataItems?>) {
         viewModelScope.launch {
             val fetchedProducts = try {
-                firestoreReference.collection("Offers").document("connecter").collection(category).get().await()
+                firestoreReference.collection("Offers").document("connecter").collection(category)
+                    .get().await()
                     .documents.mapNotNull { it.toObject(ProductDataItems::class.java) }
             } catch (e: FirebaseFirestoreException) {
                 // Handleexception
@@ -119,10 +121,11 @@ class CustomerHomeScreenViewModel(
         }
     }
 
-    fun fetchCategoryProducts(category: String, categoryproducts: MutableList<ProductDataItems?>){
+    fun fetchCategoryProducts(category: String, categoryproducts: MutableList<ProductDataItems?>) {
         viewModelScope.launch {
             val fetchedProducts = try {
-                firestoreReference.collection("Items").document("Connecter").collection(category).get().await()
+                firestoreReference.collection("Items").document("Connecter").collection(category)
+                    .get().await()
                     .documents.mapNotNull { it.toObject(ProductDataItems::class.java) }
             } catch (e: FirebaseFirestoreException) {
                 // Handleexception
@@ -132,7 +135,6 @@ class CustomerHomeScreenViewModel(
             categoryproducts.addAll(fetchedProducts)
         }
     }
-
 
 
     fun getDrawableResourceId(itemName: String, context: Context): Int {
