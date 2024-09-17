@@ -1,14 +1,18 @@
 package com.example.sih2024.viewModels
 
 import android.content.Context
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.sih2024.R
+import com.example.sih2024.presentation.customer.customerExplore.CategoryData
 import com.example.sih2024.presentation.customerHome.Product.ProductDataItems
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.launch
@@ -26,6 +30,57 @@ class CustomerHomeScreenViewModel(
 
     var firestoreReference = authViewModel.firestoreReference
     var selectedGroupIndex = mutableIntStateOf(0)
+
+
+    var CategoryImageMap = mapOf(
+        "Dairy" to R.drawable.dairy,
+        "Eggs" to R.drawable.eggs,
+        "Fruits" to R.drawable.fruits,
+        "Meat" to R.drawable.meatfish,
+        "Vegetables" to R.drawable.vegetables
+    )
+
+    var CategoryColorMap = mapOf(
+        "Dairy" to Color(0x40FDE598),
+        "Eggs" to Color(0x40FDE598),
+        "Fruits" to Color(0x1A53B175),
+        "Meat" to Color(0x40F7A593),
+        "Vegetables" to Color(0x1A53B175)
+    )
+
+    var CategoryBorderMap = mapOf(
+        "Dairy" to Color(0xFFFDE598),
+        "Eggs" to Color(0xFFFDE598),
+        "Fruits" to Color(0xFF53B175),
+        "Meat" to Color(0xFFF7A593),
+        "Vegetables" to Color(0xFF53B175)
+
+    )
+
+    var categoryDataMap = CategoryImageMap.map {(category , image) ->
+        category to CategoryData(
+            image = image,
+            color = CategoryColorMap[category] ?: Color.Transparent,
+            border = CategoryBorderMap[category] ?: Color.Transparent
+        )
+    }.toMap()
+
+
+
+    var categoryList = mutableStateListOf<String?>()
+
+    fun fetchCategory() {
+        viewModelScope.launch {
+            try{
+                val querySnapshot = firestoreReference.collection("Category").get().await()
+                val categoryNames = querySnapshot.documents.mapNotNull { it.id }
+                categoryList.clear()
+                categoryList.addAll(categoryNames)
+            }catch (e : FirebaseFirestoreException){
+
+            }
+        }
+    }
 
 
 

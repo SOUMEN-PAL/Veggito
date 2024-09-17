@@ -22,6 +22,7 @@ import com.example.sih2024.presentation.OTPScreen
 import com.example.sih2024.presentation.PhoneNumberScreen
 import com.example.sih2024.presentation.SignUpMethodsScreen
 import com.example.sih2024.presentation.SignUpScreen
+import com.example.sih2024.presentation.customer.customerExplore.ExploreScreen
 import com.example.sih2024.presentation.onBordingScreen
 import com.example.sih2024.screens.pages.Pages
 import com.example.sih2024.viewModels.AuthViewModel
@@ -164,9 +165,17 @@ fun Navigation(
             //TODO:Change
         }
 
+
+//Customer composables routes acess
         composable(route = Pages.CustomerHomeScreen.route) {
             CustomerHomeScreen(viewModel , customerHomeScreenViewModel , navController)
         }
+        composable(route = Pages.CustomerCategoryScreen.route){
+            ExploreScreen(navController = navController, customerHomeScreenViewModel = customerHomeScreenViewModel, context = activity)
+        }
+
+
+
 
         composable(route = Pages.FarmerHomeScreen.route) {
             CustomerHomeScreen(viewModel , customerHomeScreenViewModel , navController)

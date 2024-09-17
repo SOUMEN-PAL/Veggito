@@ -11,7 +11,7 @@ sealed class Pages(val route : String) {
 
     //customer Screens
     data object CustomerHomeScreen : Pages("customerHomeScreen")
-
+    data object CustomerCategoryScreen : Pages("customerCategoryScreen")
 
 
     //farmer Screens

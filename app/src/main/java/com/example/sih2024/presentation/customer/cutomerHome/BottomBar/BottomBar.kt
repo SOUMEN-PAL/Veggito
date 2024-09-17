@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.sih2024.screens.pages.Pages
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 
 @Composable
@@ -37,7 +38,17 @@ fun BottomBar(customerHomeScreenViewModel: CustomerHomeScreenViewModel , navCont
                 Group(
                     group = group,
                     isClicked = selectedGroupIndex == index, // Pass state from parent
-                    onGroupClick = { selectedGroupIndex = index } // Update state in parent
+                    onGroupClick = {
+                        selectedGroupIndex = index
+                        if(selectedGroupIndex == 0){
+                            navController.navigate(Pages.CustomerHomeScreen.route)
+                        }
+
+                        if(selectedGroupIndex == 1){
+                            navController.navigate(Pages.CustomerCategoryScreen.route)
+                        }
+
+                    } // Update state in parent
                 )}
 
         }
