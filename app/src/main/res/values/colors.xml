@@ -15,4 +15,16 @@
     <color name="temCard">#FFFDFFFC</color>
     <color name="grey">#FF7C7C7C</color>
     <color name="backgroundMix">#FCFCFC</color>
+    <color name="lightgreen">#1A53B175</color>
+    <color name="lightred">#40F7A593</color>
+    <color name="lightyellow">#40FDE598</color>
+    <color name="bordergreen">#CC53B175</color>
+    <color name="borderred">#F7A593</color>
+    <color name="borderellow">#FDE598</color>
+    <color name="lighthgrey">#BCBCBC</color>
+    <color name="transactioncard">#DEDDF1</color>
+    <color name="farnerBottomGreen">#804BC32C</color>
+    <color name="farnerBottomGreen2">#804BC32C</color>
+    <color name="farnerplus">#1A9C05</color>
+    <color name="additemCard">#B8EDAF</color>
 </resources>
