@@ -14,15 +14,17 @@ import com.example.sih2024.presentation.farmer.TopBarSection
 import com.example.sih2024.presentation.farmer.TransactionSection
 import com.example.sih2024.viewModels.AuthViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
+import com.example.sih2024.viewModels.FarmerViewModel
 
 @Composable
 fun FarmerHomeScreen(
     authViewModel: AuthViewModel,
     customerHomeScreenViewModel: CustomerHomeScreenViewModel,
+    farmerViewModel: FarmerViewModel,
     navController: NavController
 ){
     Scaffold(
-        bottomBar = { BottomSection() }
+        bottomBar = { BottomSection(farmerViewModel = farmerViewModel , navController = navController , context = customerHomeScreenViewModel.context) }
     ){pv->
         Column(
             Modifier

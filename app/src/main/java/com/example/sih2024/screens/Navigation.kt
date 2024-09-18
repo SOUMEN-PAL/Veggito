@@ -29,10 +29,14 @@ import com.example.sih2024.presentation.customer.customerExplore.ExploreScreen
 import com.example.sih2024.presentation.customer.customerFavourite.FavouritesScreen
 import com.example.sih2024.presentation.customer.customercart.MyCartScreen
 import com.example.sih2024.presentation.customer.cutomerHome.Collections.SeeAllScreen
+import com.example.sih2024.presentation.farmer.Home.FarmerHomeScreen
+import com.example.sih2024.presentation.farmer.NewOrder.OrderScreen
+import com.example.sih2024.presentation.farmer.Transaction.TransactionScreen
 import com.example.sih2024.presentation.onBordingScreen
 import com.example.sih2024.screens.pages.Pages
 import com.example.sih2024.viewModels.AuthViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
+import com.example.sih2024.viewModels.FarmerViewModel
 import com.example.sih2024.viewModels.LocationViewModel
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.toObject
@@ -45,6 +49,7 @@ fun Navigation(
     viewModel: AuthViewModel,
     locationViewModel: LocationViewModel,
     customerHomeScreenViewModel: CustomerHomeScreenViewModel,
+    farmerViewModel: FarmerViewModel,
     activity: Activity
 ) {
     val navController = rememberNavController()
@@ -188,8 +193,8 @@ fun Navigation(
 
 
         composable(route = Pages.FarmerHomeScreen.route) {
-            CustomerHomeScreen(viewModel, customerHomeScreenViewModel, navController)
-            //TODO:Change
+            FarmerHomeScreen(authViewModel = viewModel, customerHomeScreenViewModel = customerHomeScreenViewModel, farmerViewModel = farmerViewModel ,navController = navController)
+
         }
 
         composable(
@@ -258,6 +263,20 @@ fun Navigation(
                 customerHomeScreenViewModel = customerHomeScreenViewModel,
                 authViewModel = viewModel
             )
+        }
+
+
+        composable(route = Pages.TransactionScreen.route){
+            TransactionScreen(
+                authViewModel = viewModel,
+                customerHomeScreenViewModel = customerHomeScreenViewModel ,
+                farmerViewModel = farmerViewModel,
+                navController = navController
+            )
+        }
+
+        composable(route = Pages.ListProductFarmers.route){
+            OrderScreen(viewModel , customerHomeScreenViewModel , farmerViewModel , navController)
         }
     }
 

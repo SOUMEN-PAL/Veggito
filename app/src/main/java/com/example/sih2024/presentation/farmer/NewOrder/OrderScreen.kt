@@ -8,13 +8,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import com.example.sih2024.presentation.farmer.BottomSection
 import com.example.sih2024.presentation.farmer.TopBarSection
+import com.example.sih2024.viewModels.AuthViewModel
+import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
+import com.example.sih2024.viewModels.FarmerViewModel
 
 @Composable
-fun OrderScreen(){
+fun OrderScreen(
+    authViewModel: AuthViewModel,
+    customerHomeScreenViewModel: CustomerHomeScreenViewModel,
+    farmerViewModel: FarmerViewModel,
+    navController: NavController
+){
     Scaffold(
-        bottomBar = { BottomSection() }
+        bottomBar = { BottomSection(farmerViewModel , customerHomeScreenViewModel.context , navController) }
     ){pv->
         Column(
             Modifier

@@ -18,6 +18,8 @@ import com.example.sih2024.ui.theme.SIH2024Theme
 import com.example.sih2024.viewModels.AuthViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModelFactory
+import com.example.sih2024.viewModels.FarmerViewModel
+import com.example.sih2024.viewModels.FarmerViewModelFactory
 import com.example.sih2024.viewModels.LocationViewModel
 import com.example.sih2024.viewModels.LocationViewModelFactory
 
@@ -38,6 +40,8 @@ class MainActivity : ComponentActivity() {
                 )
             )
 
+            var farmerVIewModel : FarmerViewModel = viewModel(factory = FarmerViewModelFactory(authViewModel = authViewModel , customerHomeScreenViewModel = customerHomeScreenViewModel , this))
+
 
             SIH2024Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -46,6 +50,7 @@ class MainActivity : ComponentActivity() {
                         activity = this,
                         locationViewModel = locationViewModel,
                         customerHomeScreenViewModel = customerHomeScreenViewModel,
+                        farmerViewModel = farmerVIewModel,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

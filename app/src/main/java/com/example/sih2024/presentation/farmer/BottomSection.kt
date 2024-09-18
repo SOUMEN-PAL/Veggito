@@ -1,5 +1,6 @@
 package com.example.sih2024.presentation.farmer
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,10 +35,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.sih2024.R
+import com.example.sih2024.screens.pages.Pages
+import com.example.sih2024.viewModels.FarmerViewModel
 
 @Composable
-fun BottomSection() {
+fun BottomSection(
+    farmerViewModel: FarmerViewModel,
+    context: Context,
+    navController: NavController
+) {
+
+    val selectedGroupIndex = farmerViewModel.selectedGroupIndex
+
     Column(
         modifier = Modifier.fillMaxWidth().imePadding().background(color = Color.Transparent)
     ) {
@@ -65,14 +76,23 @@ fun BottomSection() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+
+                            navController.navigate(Pages.FarmerHomeScreen.route)
+
+
+                        }) {
                             Icon(imageVector = Icons.Default.Home,
                                 contentDescription = null,
                                 modifier = Modifier.size(40.dp),
                                 tint = colorResource(id = R.color.white)
                             )
                         }
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+                            //TransactionScreen
+                            navController.navigate(Pages.TransactionScreen.route)
+
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.CalendarToday,
                                 contentDescription = null,
@@ -99,14 +119,19 @@ fun BottomSection() {
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+
+                        }) {
                             Icon(imageVector = Icons.Default.Wallet,
                                 contentDescription = null,
                                 modifier = Modifier.size(40.dp),
                                 tint = colorResource(id = R.color.white)
                             )
                         }
-                        IconButton(onClick = { /*TODO*/ }) {
+                        IconButton(onClick = {
+
+
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.AccountCircle,
                                 contentDescription = null,
@@ -120,7 +145,9 @@ fun BottomSection() {
             }
 
             Button(
-                onClick = { /* Button click action */ },
+                onClick = {
+                    navController.navigate(Pages.ListProductFarmers.route)
+                },
                 modifier = Modifier
                     .size(100.dp)
                     .clip(shape = CircleShape)
