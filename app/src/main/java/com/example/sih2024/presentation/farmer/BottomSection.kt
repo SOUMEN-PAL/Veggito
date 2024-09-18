@@ -120,6 +120,7 @@ fun BottomSection(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         IconButton(onClick = {
+                            navController.navigate(Pages.ShipmentScreen.route)
 
                         }) {
                             Icon(imageVector = Icons.Default.Wallet,
@@ -129,7 +130,7 @@ fun BottomSection(
                             )
                         }
                         IconButton(onClick = {
-
+                            navController.navigate(Pages.SignOut.route)
 
                         }) {
                             Icon(

@@ -27,4 +27,6 @@
     <color name="farnerBottomGreen2">#804BC32C</color>
     <color name="farnerplus">#1A9C05</color>
     <color name="additemCard">#B8EDAF</color>
+    <color name="ontheway">#FFCF41</color>
+    <color name="pending">#FD796F</color>
 </resources>

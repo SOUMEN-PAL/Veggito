@@ -23,6 +23,7 @@ sealed class Pages(val route : String) {
     data object FarmerHomeScreen : Pages("farmerHomeScreen")
     data object TransactionScreen : Pages("transactionScreen")
     data object ListProductFarmers : Pages("OrderScreen")
+    data object ShipmentScreen : Pages("ShipmentScreen")
 
     //Agent Screens
     data object AgentHomeScreen : Pages("agentHomeScreen")

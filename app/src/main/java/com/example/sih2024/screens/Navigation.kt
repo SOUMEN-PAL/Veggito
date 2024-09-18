@@ -32,6 +32,7 @@ import com.example.sih2024.presentation.customer.cutomerHome.Collections.SeeAllS
 import com.example.sih2024.presentation.farmer.Home.FarmerHomeScreen
 import com.example.sih2024.presentation.farmer.NewOrder.OrderScreen
 import com.example.sih2024.presentation.farmer.Transaction.TransactionScreen
+import com.example.sih2024.presentation.farmer.shipment.ShipmentScreen
 import com.example.sih2024.presentation.onBordingScreen
 import com.example.sih2024.screens.pages.Pages
 import com.example.sih2024.viewModels.AuthViewModel
@@ -277,6 +278,15 @@ fun Navigation(
 
         composable(route = Pages.ListProductFarmers.route){
             OrderScreen(viewModel , customerHomeScreenViewModel , farmerViewModel , navController)
+        }
+
+        composable(route = Pages.ShipmentScreen.route){
+            ShipmentScreen(
+                authViewModel = viewModel,
+                customerHomeScreenViewModel = customerHomeScreenViewModel,
+                farmerViewModel = farmerViewModel,
+                navController = navController
+            )
         }
     }
 

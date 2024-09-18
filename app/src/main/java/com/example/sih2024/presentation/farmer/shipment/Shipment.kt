@@ -1,4 +1,4 @@
-package com.example.sih2024.presentation.farmer
+package com.example.sih2024.presentation.farmer.shipment
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,16 +18,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.sih2024.R
+import com.example.sih2024.presentation.farmer.FarmerTransactionModel
 
 @Composable
-fun Transaction(
-    transaction : FarmerTransactionModel
+fun Shipment(
+    shipmentData: FarmerTransactionModel
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -58,15 +60,18 @@ fun Transaction(
                         modifier = Modifier.size(40.dp)
                     )
                     Column {
-                        Text(text = transaction.name, fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                        Text(text = transaction.date, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(text = shipmentData.name, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(text = shipmentData.date, fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     }
                 }
                 Box(
                     modifier = Modifier
                         .wrapContentSize(Alignment.CenterEnd)
                         .background(
-                            color = colorResource(id = R.color.lighthgrey),
+                            color = if (shipmentData.status == "Done") colorResource(id = R.color.maingreen)
+                            else if (shipmentData.status == "On The Way") colorResource(id = R.color.ontheway) else colorResource(
+                                id = R.color.pending
+                            ),
                             shape = RoundedCornerShape(20.dp)
                         )
                         .padding(horizontal = 20.dp, vertical = 5.dp)
@@ -75,7 +80,7 @@ fun Transaction(
                     Column(
                     ) {
                         //TODO: items ka price ka sum
-                        Text(text = "₹ " + transaction.price.toString())
+                        Text(text = shipmentData.status)
 
                     }
 

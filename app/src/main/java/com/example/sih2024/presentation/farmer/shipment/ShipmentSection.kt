@@ -1,4 +1,4 @@
-package com.example.sih2024.presentation.farmer
+package com.example.sih2024.presentation.farmer.shipment
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,12 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.sih2024.presentation.farmer.FarmerTransactionModel
 
 @Composable
-fun TransactionSection(
-    text: String,
-    transactionList : MutableList<FarmerTransactionModel?>
-) {
+fun ShipmentSection(modifier: Modifier = Modifier , shipmentList : MutableList<FarmerTransactionModel?>) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
@@ -32,12 +30,12 @@ fun TransactionSection(
             Column(modifier = Modifier
                 .padding(horizontal = 16.dp)
             ) {
-                Text(text = text, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(text = "Shipments", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(16.dp))
                 LazyColumn {
-                    items(transactionList){singleTransaction->
-                        if(singleTransaction!=null){
-                            Transaction(transaction = singleTransaction)
+                    items(shipmentList){singleShipment->
+                        if(singleShipment!=null){
+                            Shipment(singleShipment)
                         }
                     }
                 }
