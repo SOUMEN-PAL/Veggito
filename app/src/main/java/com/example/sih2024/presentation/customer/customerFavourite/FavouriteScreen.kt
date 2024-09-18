@@ -64,6 +64,7 @@ fun FavouritesScreen(
                                     })
                                 }
                             }
+                            customerHomeScreenViewModel.fetchCartDetails(customerHomeScreenViewModel.cartItems)
                         }
                     },
                     modifier = Modifier.size(width = 353.dp, height = 60.dp),
