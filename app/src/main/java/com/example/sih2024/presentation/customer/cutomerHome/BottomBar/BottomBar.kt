@@ -53,8 +53,9 @@ fun BottomBar(customerHomeScreenViewModel: CustomerHomeScreenViewModel , navCont
                         if(selectedGroupIndex == 3){
                             navController.navigate(Pages.FavouriteScreen.route)
                         }
+
                         if(selectedGroupIndex == 4){
-                            navController.navigate(Pages.SignOut.route)
+                            navController.navigate(Pages.CustomerAccountScreen.route)
                         }
 
                     } // Update state in parent

@@ -305,26 +305,6 @@ fun SignUpScreen(modifier: Modifier = Modifier , authViewModel: AuthViewModel , 
                 }
 
 
-
-                Button(
-                    onClick = {
-                        selectedButton = "Agent"
-                    },
-                    modifier = Modifier
-                        .height(40.dp)
-                        .weight(1f),
-                    shape = RoundedCornerShape(19.dp),
-                    colors = ButtonColors(
-                        containerColor = if (selectedButton == "Agent") colorResource(id = R.color.googleButton) else colorResource(
-                            id = R.color.maingreen
-                        ),
-                        contentColor = Color.White,
-                        disabledContainerColor = colorResource(id = R.color.maingreen),
-                        disabledContentColor = Color.White
-                    )
-                ) {
-                    Text(text = "Agent", textAlign = TextAlign.Center)
-                }
             }
 
             //Button row ended here

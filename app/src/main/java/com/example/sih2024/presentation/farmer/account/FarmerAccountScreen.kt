@@ -1,37 +1,36 @@
-package com.example.sih2024.presentation.farmer.NewOrder
+package com.example.sih2024.presentation.farmer.account
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.sih2024.presentation.farmer.BottomSection
+import com.example.sih2024.presentation.farmer.Home.CardSection
+import com.example.sih2024.presentation.farmer.Home.GraphSection
 import com.example.sih2024.presentation.farmer.TopBarSection
+import com.example.sih2024.presentation.farmer.TransactionSection
 import com.example.sih2024.viewModels.AuthViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 import com.example.sih2024.viewModels.FarmerViewModel
 
+
 @Composable
-fun OrderScreen(
+fun FarmerAccountScreen(
     authViewModel: AuthViewModel,
     customerHomeScreenViewModel: CustomerHomeScreenViewModel,
     farmerViewModel: FarmerViewModel,
     navController: NavController
 ){
-    val category = farmerViewModel.categoryData
-
-    LaunchedEffect(Unit) {
-        farmerViewModel.fetchCategory()
-    }
-
 
     Scaffold(
-        bottomBar = { BottomSection(farmerViewModel , customerHomeScreenViewModel.context , navController) }
+        bottomBar = { BottomSection(farmerViewModel = farmerViewModel , navController = navController , context = customerHomeScreenViewModel.context) }
     ){pv->
         Column(
             Modifier
@@ -40,8 +39,11 @@ fun OrderScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            TopBarSection("New Order")
-            AddItemSection(categories = category, navController = navController , authViewModel = authViewModel , farmerViewModel = farmerViewModel , customerHomeScreenViewModel = customerHomeScreenViewModel)
+            TopBarSection("Accounts")
+
+            Account(authViewModel = authViewModel, farmerViewModel = farmerViewModel, customerHomeScreenViewModel = customerHomeScreenViewModel)
+
+
         }
 
     }

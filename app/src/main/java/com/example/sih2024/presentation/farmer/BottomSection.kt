@@ -130,7 +130,7 @@ fun BottomSection(
                             )
                         }
                         IconButton(onClick = {
-                            navController.navigate(Pages.SignOut.route)
+                            navController.navigate(Pages.FarmerAccountScreen.route)
 
                         }) {
                             Icon(

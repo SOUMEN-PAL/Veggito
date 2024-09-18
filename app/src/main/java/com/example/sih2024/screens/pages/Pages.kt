@@ -18,12 +18,14 @@ sealed class Pages(val route : String) {
     data object SeeAllScreen : Pages("seeAllScreen")
     data object CartScreen : Pages("cartScreen")
     data object FavouriteScreen : Pages("favouriteScreen")
+    data object CustomerAccountScreen : Pages("customer account")
 
     //farmer Screens
     data object FarmerHomeScreen : Pages("farmerHomeScreen")
     data object TransactionScreen : Pages("transactionScreen")
     data object ListProductFarmers : Pages("OrderScreen")
     data object ShipmentScreen : Pages("ShipmentScreen")
+    data object FarmerAccountScreen : Pages("farmerAccountScreen")
 
     //Agent Screens
     data object AgentHomeScreen : Pages("agentHomeScreen")

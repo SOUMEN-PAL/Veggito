@@ -24,6 +24,7 @@ import com.example.sih2024.presentation.OTPScreen
 import com.example.sih2024.presentation.PhoneNumberScreen
 import com.example.sih2024.presentation.SignUpMethodsScreen
 import com.example.sih2024.presentation.SignUpScreen
+import com.example.sih2024.presentation.customer.accounts.CustomerAccount
 import com.example.sih2024.presentation.customer.customerExplore.CategoryItemsScreen
 import com.example.sih2024.presentation.customer.customerExplore.ExploreScreen
 import com.example.sih2024.presentation.customer.customerFavourite.FavouritesScreen
@@ -32,6 +33,7 @@ import com.example.sih2024.presentation.customer.cutomerHome.Collections.SeeAllS
 import com.example.sih2024.presentation.farmer.Home.FarmerHomeScreen
 import com.example.sih2024.presentation.farmer.NewOrder.OrderScreen
 import com.example.sih2024.presentation.farmer.Transaction.TransactionScreen
+import com.example.sih2024.presentation.farmer.account.FarmerAccountScreen
 import com.example.sih2024.presentation.farmer.shipment.ShipmentScreen
 import com.example.sih2024.presentation.onBordingScreen
 import com.example.sih2024.screens.pages.Pages
@@ -194,7 +196,12 @@ fun Navigation(
 
 
         composable(route = Pages.FarmerHomeScreen.route) {
-            FarmerHomeScreen(authViewModel = viewModel, customerHomeScreenViewModel = customerHomeScreenViewModel, farmerViewModel = farmerViewModel ,navController = navController)
+            FarmerHomeScreen(
+                authViewModel = viewModel,
+                customerHomeScreenViewModel = customerHomeScreenViewModel,
+                farmerViewModel = farmerViewModel,
+                navController = navController
+            )
 
         }
 
@@ -240,13 +247,17 @@ fun Navigation(
             }
 
         }
-        
-        composable(route = Pages.SignOut.route){
-            SignoutScreen(authViewModel = viewModel , navController = navController , customerHomeScreenViewModel = customerHomeScreenViewModel)
+
+        composable(route = Pages.SignOut.route) {
+            SignoutScreen(
+                authViewModel = viewModel,
+                navController = navController,
+                customerHomeScreenViewModel = customerHomeScreenViewModel
+            )
         }
 
 
-        composable(route = Pages.CartScreen.route){
+        composable(route = Pages.CartScreen.route) {
             MyCartScreen(
                 modifier = Modifier,
                 authViewModel = viewModel,
@@ -257,7 +268,7 @@ fun Navigation(
         }
 
 
-        composable(route = Pages.FavouriteScreen.route){
+        composable(route = Pages.FavouriteScreen.route) {
             FavouritesScreen(
                 modifier = Modifier,
                 navController = navController,
@@ -267,21 +278,39 @@ fun Navigation(
         }
 
 
-        composable(route = Pages.TransactionScreen.route){
+        composable(route = Pages.TransactionScreen.route) {
             TransactionScreen(
                 authViewModel = viewModel,
-                customerHomeScreenViewModel = customerHomeScreenViewModel ,
+                customerHomeScreenViewModel = customerHomeScreenViewModel,
                 farmerViewModel = farmerViewModel,
                 navController = navController
             )
         }
 
-        composable(route = Pages.ListProductFarmers.route){
-            OrderScreen(viewModel , customerHomeScreenViewModel , farmerViewModel , navController)
+        composable(route = Pages.ListProductFarmers.route) {
+            OrderScreen(viewModel, customerHomeScreenViewModel, farmerViewModel, navController)
         }
 
-        composable(route = Pages.ShipmentScreen.route){
+        composable(route = Pages.ShipmentScreen.route) {
             ShipmentScreen(
+                authViewModel = viewModel,
+                customerHomeScreenViewModel = customerHomeScreenViewModel,
+                farmerViewModel = farmerViewModel,
+                navController = navController
+            )
+        }
+
+        composable(route = Pages.FarmerAccountScreen.route) {
+            FarmerAccountScreen(
+                authViewModel = viewModel,
+                customerHomeScreenViewModel = customerHomeScreenViewModel,
+                farmerViewModel = farmerViewModel,
+                navController = navController
+            )
+        }
+
+        composable(route = Pages.CustomerAccountScreen.route) {
+            CustomerAccount(
                 authViewModel = viewModel,
                 customerHomeScreenViewModel = customerHomeScreenViewModel,
                 farmerViewModel = farmerViewModel,
