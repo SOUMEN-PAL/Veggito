@@ -45,7 +45,7 @@ import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 @Composable
 fun Product(
     productData: ProductDataItems,
-    modifier: Modifier = Modifier.padding(8.dp),
+    modifier: Modifier = Modifier.padding(6.dp),
     customerHomeScreenViewModel: CustomerHomeScreenViewModel
 ) {
 
@@ -71,7 +71,7 @@ fun Product(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(8.dp),
         ) {
 
             IconButton(onClick = {
