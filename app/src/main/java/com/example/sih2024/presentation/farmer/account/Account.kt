@@ -49,6 +49,8 @@ fun Account(modifier: Modifier = Modifier.fillMaxSize() , authViewModel: AuthVie
             onClick = {
                 authViewModel.signOut()
                 navController.navigate(Pages.onBoardScreen.route)
+                farmerViewModel.selectedGroupIndex.intValue = 0
+                customerHomeScreenViewModel.selectedGroupIndex.intValue = 0
             },
             modifier = Modifier.size(width = 253.dp, height = 60.dp),
             shape = RoundedCornerShape(19.dp),
