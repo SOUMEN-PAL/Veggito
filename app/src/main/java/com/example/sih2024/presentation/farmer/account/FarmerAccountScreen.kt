@@ -41,7 +41,7 @@ fun FarmerAccountScreen(
         ) {
             TopBarSection("Accounts")
 
-            Account(authViewModel = authViewModel, farmerViewModel = farmerViewModel, customerHomeScreenViewModel = customerHomeScreenViewModel)
+            Account(authViewModel = authViewModel, farmerViewModel = farmerViewModel, customerHomeScreenViewModel = customerHomeScreenViewModel , navController = navController)
 
 
         }

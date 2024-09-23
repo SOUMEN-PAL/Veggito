@@ -23,13 +23,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.sih2024.R
+import com.example.sih2024.screens.pages.Pages
 import com.example.sih2024.viewModels.AuthViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 import com.example.sih2024.viewModels.FarmerViewModel
 
 @Composable
-fun Account(modifier: Modifier = Modifier.fillMaxSize() , authViewModel: AuthViewModel , farmerViewModel: FarmerViewModel , customerHomeScreenViewModel: CustomerHomeScreenViewModel) {
+fun Account(modifier: Modifier = Modifier.fillMaxSize() , authViewModel: AuthViewModel , farmerViewModel: FarmerViewModel , customerHomeScreenViewModel: CustomerHomeScreenViewModel , navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -46,6 +48,7 @@ fun Account(modifier: Modifier = Modifier.fillMaxSize() , authViewModel: AuthVie
         Button(
             onClick = {
                 authViewModel.signOut()
+                navController.navigate(Pages.onBoardScreen.route)
             },
             modifier = Modifier.size(width = 253.dp, height = 60.dp),
             shape = RoundedCornerShape(19.dp),
