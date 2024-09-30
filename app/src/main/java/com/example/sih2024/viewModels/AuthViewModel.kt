@@ -9,12 +9,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import com.example.sih2024.R
 import com.example.sih2024.models.User
+import com.google.android.gms.common.api.ApiException
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
@@ -28,8 +37,12 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.concurrent.TimeUnit
+import androidx.credentials.ClearCredentialStateRequest
 
-class AuthViewModel : ViewModel() {
+
+class AuthViewModel(
+    private val context: Context
+) : ViewModel() {
 
     //User details stored initially
     private var _name = mutableStateOf("")
@@ -47,12 +60,12 @@ class AuthViewModel : ViewModel() {
     private var _state = mutableStateOf("")
 
     //Firebase setup
-    private var _myAuth : FirebaseAuth = Firebase.auth
+    private var _myAuth: FirebaseAuth = Firebase.auth
     private var verificationID = mutableStateOf("")
     lateinit var credential: PhoneAuthCredential
 
     //Firebase Firestore
-    private var firestore : FirebaseFirestore = Firebase.firestore
+    private var firestore: FirebaseFirestore = Firebase.firestore
     val firestoreReference = firestore
 
     //Exposing the values
@@ -72,25 +85,27 @@ class AuthViewModel : ViewModel() {
     val state = _state
     val district = _district
 
-    fun setLocationDetails(lat : Double , long : Double){
+
+
+    fun setLocationDetails(lat: Double, long: Double) {
         _latitude.doubleValue = lat
         _longitude.doubleValue = long
     }
 
-    fun setDistrictAndState(district : String , state : String){
+    fun setDistrictAndState(district: String, state: String) {
         _district.value = district
         _state.value = state
     }
 
-    fun setAddress(address : String){
+    fun setAddress(address: String) {
         _location.value = address
     }
 
-    fun setUserType(userType : String){
+    fun setUserType(userType: String) {
         _userType.value = userType
     }
 
-    fun getName(name : String){
+    fun getName(name: String) {
         _name.value = name
     }
 
@@ -110,25 +125,25 @@ class AuthViewModel : ViewModel() {
     }
 
     //Phone Auth
-    fun getPhoneNumber(number : String){
+    fun getPhoneNumber(number: String) {
         _phoneNumber.value = number
     }
 
-    fun getOtp(otp : String){
+    fun getOtp(otp: String) {
         _otp.value = otp
     }
 
-    fun sendOtp(activity: Activity){
+    fun sendOtp(activity: Activity) {
         val number = "+91${_phoneNumber.value}"
-        sendVerification(number , activity)
+        sendVerification(number, activity)
 
     }
 
-    fun sendVerification(number : String , activity: Activity){
+    fun sendVerification(number: String, activity: Activity) {
         val options = PhoneAuthOptions
             .newBuilder(_myAuth)
             .setPhoneNumber(number)
-            .setTimeout(60L , TimeUnit.SECONDS)
+            .setTimeout(60L, TimeUnit.SECONDS)
             .setActivity(activity)
             .setCallbacks(verificationCallBack)
             .build()
@@ -143,24 +158,25 @@ class AuthViewModel : ViewModel() {
     }
 
     //callback function
-    val verificationCallBack : OnVerificationStateChangedCallbacks = object : OnVerificationStateChangedCallbacks(){
-        override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+    val verificationCallBack: OnVerificationStateChangedCallbacks =
+        object : OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
 
-            _isVerificationCompleted.value = true
-            signInWithPhoneAuthCredential(credential)
+                _isVerificationCompleted.value = true
+                signInWithPhoneAuthCredential(credential)
 
+            }
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                Log.e("FirebaseVerification", "Verification failed: ${e.message}", e)
+            }
+
+            override fun onCodeSent(s: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                super.onCodeSent(s, p1)
+                verificationID.value = s
+
+            }
         }
-
-        override fun onVerificationFailed(e: FirebaseException) {
-            Log.e("FirebaseVerification", "Verification failed: ${e.message}", e)
-        }
-
-        override fun onCodeSent(s: String, p1: PhoneAuthProvider.ForceResendingToken) {
-            super.onCodeSent(s, p1)
-            verificationID.value = s
-
-        }
-    }
 
     fun verifyOTP(onSuccess: (Boolean) -> Unit) {
         try {
@@ -170,7 +186,11 @@ class AuthViewModel : ViewModel() {
                     if (task.isSuccessful) {
                         onSuccess(true)
                     } else {
-                        Log.e("MainViewModel", "OTP verification failed: ${task.exception?.message}", task.exception)
+                        Log.e(
+                            "MainViewModel",
+                            "OTP verification failed: ${task.exception?.message}",
+                            task.exception
+                        )
                         onSuccess(false)
                     }
                 }
@@ -184,33 +204,37 @@ class AuthViewModel : ViewModel() {
 
     //Email auth
 
-    fun getEmail(email:String){
+    fun getEmail(email: String) {
         _email.value = email
     }
-    fun getPassword(password : String){
+
+    fun getPassword(password: String) {
         _password.value = password
     }
 
 
     fun linkPhoneCredential(userData: User, onResult: (Boolean) -> Unit) {
         val user = _myAuth.currentUser
-        val credential_email = EmailAuthProvider.getCredential(email.value , password.value)
+        val credential_email = EmailAuthProvider.getCredential(email.value, password.value)
         user?.linkWithCredential(credential_email)
             ?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    if(userData.userType == "Farmer"){
+                    if (userData.userType == "Farmer") {
                         viewModelScope.launch {
                             try {
                                 SavefarmerToFireBase(userData = userData)
                                 onResult(true)
-                            }catch (e: Exception) {
-                                Log.e("MainViewModel", "Error saving farmer to Firestore: ${e.message}", e)
+                            } catch (e: Exception) {
+                                Log.e(
+                                    "MainViewModel",
+                                    "Error saving farmer to Firestore: ${e.message}",
+                                    e
+                                )
                                 onResult(false)
                             }
                         }
 
-                    }
-                    else if(userData.userType == "Customer") {
+                    } else if (userData.userType == "Customer") {
                         viewModelScope.launch {
                             try {
                                 SaveCustomerToFireBase(userData = userData)
@@ -224,8 +248,7 @@ class AuthViewModel : ViewModel() {
                                 onResult(false)
                             }
                         }
-                    }
-                    else if(userData.userType == "Agent"){
+                    } else if (userData.userType == "Agent") {
                         viewModelScope.launch {
                             try {
                                 SaveAgentToFireBase(userData = userData)
@@ -259,6 +282,7 @@ class AuthViewModel : ViewModel() {
             Log.e("MainViewModel", "Error saving user to Firestore: ${e.message}", e)
         }
     }
+
     private suspend fun SavefarmerToFireBase(userData: User) {
         try {
             firestore.collection("Farmers").document(userData.email).set(userData).await()
@@ -267,6 +291,7 @@ class AuthViewModel : ViewModel() {
             Log.e("MainViewModel", "Error saving farmer to Firestore: ${e.message}", e)
         }
     }
+
     private suspend fun SaveAgentToFireBase(userData: User) {
         try {
             firestore.collection("Agents").document(userData.email).set(userData).await()
@@ -280,14 +305,14 @@ class AuthViewModel : ViewModel() {
         return email.value.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email.value).matches()
     }
 
-    fun login(onResult:(Boolean) -> Unit) {
+    fun login(onResult: (Boolean) -> Unit) {
         _myAuth.signInWithEmailAndPassword(email.value, password.value)
             .addOnCompleteListener { task ->
                 onResult(task.isSuccessful)
             }
     }
 
-    fun sendPasswordResetEmail(email:String) {
+    fun sendPasswordResetEmail(email: String) {
         viewModelScope.launch {
             try {
                 _myAuth.sendPasswordResetEmail(email)
@@ -324,9 +349,12 @@ class AuthViewModel : ViewModel() {
     }
 
 
-
-
-    fun LoginUtil(modifier: Modifier = Modifier, locationViewModel: LocationViewModel, context: Context, onSuccess : (Boolean) ->Unit) {
+    fun LoginUtil(
+        modifier: Modifier = Modifier,
+        locationViewModel: LocationViewModel,
+        context: Context,
+        onSuccess: (Boolean) -> Unit
+    ) {
         viewModelScope.launch {
             val currentUser = myAuth.currentUser
             val firestoreReference = firestoreReference
@@ -362,7 +390,7 @@ class AuthViewModel : ViewModel() {
                     getPhoneNumber(phoneNumber)
                     getName(name)
                     getEmail(email.value)
-                    setDistrictAndState(district , state)
+                    setDistrictAndState(district, state)
                     Log.d("data", userData.userType + userData.address)
                     onSuccess(true)
                 } else {
@@ -376,6 +404,70 @@ class AuthViewModel : ViewModel() {
             }
         }
     }
+
+
+
+    //Google Sign In
+    val credentialManager = CredentialManager.create(context)
+
+    fun GoogleSignUp(onSuccess : (Boolean) -> Unit){
+
+        val googleIdOptions = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(false)
+            .setServerClientId(R.string.auth_client_id.toString())
+            .build()
+
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOptions)
+            .build()
+        viewModelScope.launch {
+            try{
+
+                val result = credentialManager.getCredential(
+                    context , request
+                )
+
+                val credential = result.credential
+                val googleIdTokenCredential = GoogleIdTokenCredential
+                    .createFrom(credential.data)
+                val googleIdToken = googleIdTokenCredential.idToken
+                val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken , null)
+                _myAuth.signInWithCredential(firebaseCredential)
+                    .addOnCompleteListener {task->
+
+                        if(task.isSuccessful){
+                            onSuccess(true)
+                        }
+
+                    }
+
+            }catch (e: ApiException) {
+                Log.e("error", "Sign in error: ${e.statusCode}")
+                onSuccess(false)
+                // Show an error message to the user
+            } catch (e: Exception) {
+                Log.e("error", "Sign in error: ${e.message}")
+                // Show a generic error message
+                onSuccess(false)
+            }
+        }
+
+    }
+
+    fun GoogleSignOut(){
+        _myAuth.signOut()
+        viewModelScope.launch {
+            credentialManager.clearCredentialState(
+                ClearCredentialStateRequest()
+            )
+        }
+    }
+
+    fun linkPhoneToGoogleAccount(phoneNumber : String){
+
+    }
+
+
 
 
 }

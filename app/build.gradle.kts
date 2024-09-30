@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.sih2024"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.sih2024"
@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
+
 
 
 

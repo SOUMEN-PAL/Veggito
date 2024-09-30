@@ -16,6 +16,7 @@ import com.example.sih2024.presentation.SignUpScreen
 import com.example.sih2024.screens.Navigation
 import com.example.sih2024.ui.theme.SIH2024Theme
 import com.example.sih2024.viewModels.AuthViewModel
+import com.example.sih2024.viewModels.AuthViewModelFactory
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModel
 import com.example.sih2024.viewModels.CustomerHomeScreenViewModelFactory
 import com.example.sih2024.viewModels.FarmerViewModel
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            var authViewModel: AuthViewModel = viewModel()
+            var authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(this))
             var locationViewModel: LocationViewModel =
                 viewModel(factory = LocationViewModelFactory(this, authViewModel))
             var customerHomeScreenViewModel: CustomerHomeScreenViewModel = viewModel(
