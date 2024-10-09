@@ -464,7 +464,7 @@ class AuthViewModel(
     }
 
     fun linkPhoneToGoogleAccount(phoneNumber : String){
-
+        
     }
 
 
